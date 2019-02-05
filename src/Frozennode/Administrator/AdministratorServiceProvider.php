@@ -87,17 +87,17 @@ class AdministratorServiceProvider extends ServiceProvider {
 		});
 
 		//set up the shared instances
-		$this->app['admin_config_factory'] = $this->app->share(function($app)
+		$this->app['admin_config_factory'] = $this->app->singleton('admin_config_factory', function()
 		{
 			return new ConfigFactory($app->make('admin_validator'), LValidator::make(array(), array()), config('administrator'));
 		});
 
-		$this->app['admin_field_factory'] = $this->app->share(function($app)
+		$this->app['admin_field_factory'] = $this->app->singleton('admin_field_factory', function()
 		{
 			return new FieldFactory($app->make('admin_validator'), $app->make('itemconfig'), $app->make('db'));
 		});
 
-		$this->app['admin_datatable'] = $this->app->share(function($app)
+		$this->app['admin_datatable'] = $this->app->singleton('admin_datatable', function()
 		{
 			$dataTable = new DataTable($app->make('itemconfig'), $app->make('admin_column_factory'), $app->make('admin_field_factory'));
 			$dataTable->setRowsPerPage($app->make('session.store'), config('administrator.global_rows_per_page'));
@@ -105,17 +105,17 @@ class AdministratorServiceProvider extends ServiceProvider {
 			return $dataTable;
 		});
 
-		$this->app['admin_column_factory'] = $this->app->share(function($app)
+		$this->app['admin_column_factory'] = $this->app->singleton('admin_column_factory', function()
 		{
 			return new ColumnFactory($app->make('admin_validator'), $app->make('itemconfig'), $app->make('db'));
 		});
 
-		$this->app['admin_action_factory'] = $this->app->share(function($app)
+		$this->app['admin_action_factory'] = $this->app->singleton('admin_action_factory', function()
 		{
 			return new ActionFactory($app->make('admin_validator'), $app->make('itemconfig'), $app->make('db'));
 		});
 
-		$this->app['admin_menu'] = $this->app->share(function($app)
+		$this->app['admin_menu'] = $this->app->singleton('admin_menu', function()
 		{
 			return new Menu($app->make('config'), $app->make('admin_config_factory'));
 		});

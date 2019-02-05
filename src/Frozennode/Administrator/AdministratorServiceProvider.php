@@ -59,7 +59,7 @@ class AdministratorServiceProvider extends ServiceProvider {
 		include __DIR__.'/../../routes.php';
 
 		//the admin validator
-		$this->app['admin_validator'] = $this->app->share(function($app)
+		$this->app['admin_validator'] = $this->app->singleton('admin_validator', function()
 		{
 			//get the original validator class so we can set it back after creating our own
 			$originalValidator = LValidator::make(array(), array());
